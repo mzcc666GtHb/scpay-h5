@@ -3,12 +3,22 @@ export interface FormColumns {
   value: number
 }
 
-export const genderColumns: FormColumns[] = [
+// 新增：更精准的取值范围
+export type GenderValue = 0 | 1
+export type IndustryValue =
+  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+  | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17
+
+// 新增：具体列项类型（结构上兼容 FormColumns）
+export type GenderColumn = Omit<FormColumns, 'value'> & { value: GenderValue }
+export type IndustryColumn = Omit<FormColumns, 'value'> & { value: IndustryValue }
+
+export const genderColumns: GenderColumn[] = [
   { text: '男', value: 0 },
   { text: '女', value: 1 },
 ]
 
-export const industryColumns: FormColumns[] = [
+export const industryColumns: IndustryColumn[] = [
   { text: '不展示', value: 0 },
   { text: '学生', value: 1 },
   { text: '自由职业', value: 2 },
