@@ -1,0 +1,24 @@
+# Dependencies & caches
+node_modules/
+.pnpm-store/
+**/.cache/
+**/.vite/
+
+# Build output
+dist/
+dist-*/
+
+# Editors/OS files
+.vscode/
+.idea/
+.DS_Store
+
+# Logs & locks
+*.log
+pnpm-lock.yaml
+
+# Generated types
+types/auto-imports.d.ts
+
+# Misc
+coverage/
