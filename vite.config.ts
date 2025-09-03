@@ -102,19 +102,24 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       rollupOptions: {
         // 静态资源分类打包
         output: {
-          chunkFileNames: 'js/[name]-[hash].js', // 引入文件名的名称
-          entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
-          assetFileNames: '[ext]/[name]-[hash].[ext]', // 资源文件像 字体，图片等
-          // 将 node_modules 三方依赖包最小化拆分
+          chunkFileNames: 'js/[name]-[hash].js',
+          entryFileNames: 'js/[name]-[hash].js',
+          assetFileNames: '[ext]/[name]-[hash].[ext]',
+          // 将常见三方库按组拆分，其他依赖并入 vendor，避免产出大量小 chunk
           manualChunks(id) {
-            if (id.includes('node_modules')) {
-              const paths = id.toString().split('node_modules/')
-              if (paths[2]) {
-                return paths[2].split('/')[0].toString()
-              }
-
-              return paths[1].split('/')[0].toString()
+            if (!id.includes('node_modules')) return
+            const groups: Record<string, string[]> = {
+              vue: ['vue', 'vue-router', 'pinia'],
+              vant: ['vant', '@vant/use'],
+              echarts: ['echarts'],
+              lodash: ['lodash-es'],
             }
+            for (const [chunk, pkgs] of Object.entries(groups)) {
+              if (pkgs.some((pkg) => id.includes(`/node_modules/${pkg}/`))) {
+                return chunk
+              }
+            }
+            return 'vendor'
           },
         },
       },
@@ -154,20 +159,21 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
 
     optimizeDeps: {
       /**
-       * 依赖预构建，vite 启动时会将下面 include 里的模块，编译成 esm 格式并缓存到 node_modules/.vite 文件夹，
-       * 页面加载到对应模块时如果浏览器有缓存就读取浏览器缓存，如果没有会读取本地缓存并按需加载
-       * 尤其当您禁用浏览器缓存时（这种情况只应该发生在调试阶段）必须将对应模块加入到 include 里，
-       * 否则会遇到开发环境切换页面卡顿的问题（vite 会认为它是一个新的依赖包会重新加载并强制刷新页面），
-       * 因为它既无法使用浏览器缓存，又没有在本地 node_modules/.vite 里缓存
-       * 温馨提示：如果你使用的第三方库是全局引入，也就是引入到 src/main.ts 文件里，
-       * 就不需要再添加到 include 里了，因为 vite 会自动将它们缓存到 node_modules/.vite
+       * 依赖预构建...
        */
       include: [
+        // 原有
         'pinia',
         'lodash-es',
         'axios',
+        // 新增：核心/常用依赖，优化冷启动 & 路由切换体验
+        'vue',
+        'vue-router',
+        '@vueuse/core',
+        'nprogress',
+        'qs',
+        'echarts',
       ],
-      // 打包时强制排除的依赖项
       exclude: [
         // https://www.mulingyuer.com/archives/928/
         'vant',

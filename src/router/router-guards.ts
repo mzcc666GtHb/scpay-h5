@@ -7,12 +7,15 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { storage } from '@/utils/Storage'
 import { PageEnum } from '@/enums/pageEnum'
 import 'nprogress/nprogress.css'
+import { getAppEnvConfig } from '@/utils/env'
 
 NProgress.configure({ parent: '#app' })
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN
 
 const whitePathList = [LOGIN_PATH] // no redirect whitelist
+// 允许通过“路由名”白名单（错误页/登录页）
+const whiteNameList = [PageEnum.ERROR_PAGE_NAME, 'ErrorPageSon', PageEnum.BASE_LOGIN_NAME] as const
 
 export function createRouterGuards(router: Router) {
   router.beforeEach(async (to, from, next) => {
@@ -21,13 +24,20 @@ export function createRouterGuards(router: Router) {
     NProgress.start()
     const userStore = useUserStoreWithOut()
 
-    if (from.path === LOGIN_PATH && to.name === PageEnum.ERROR_PAGE_NAME) {
-      next(PageEnum.BASE_HOME)
+    // 允许错误页始终放行（避免未登录时进入 404 被重定向死循环）
+    if (to.name && (whiteNameList as readonly string[]).includes(to.name as string)) {
+      next()
       return
     }
 
-    // Whitelist can be directly entered
+    // Whitelist path 可直接进入（/login）
     if (whitePathList.includes(to.path as PageEnum)) {
+      // 已登录访问登录页 -> 跳首页
+      const token = storage.get(ACCESS_TOKEN)
+      if (to.path === LOGIN_PATH && token) {
+        next(PageEnum.BASE_HOME)
+        return
+      }
       next()
       return
     }
@@ -35,8 +45,13 @@ export function createRouterGuards(router: Router) {
     const token = storage.get(ACCESS_TOKEN)
 
     if (!token) {
-      // redirect login page
-      next(LOGIN_PATH)
+      // 未登录访问受限页，带上 redirect 返回登录后能回跳
+      next({ path: LOGIN_PATH, query: { redirect: to.fullPath } })
+      return
+    }
+
+    if (from.path === LOGIN_PATH && to.name === PageEnum.ERROR_PAGE_NAME) {
+      next(PageEnum.BASE_HOME)
       return
     }
 
@@ -46,7 +61,8 @@ export function createRouterGuards(router: Router) {
         await userStore.GetUserInfo()
       }
       catch (err) {
-        next()
+        // 拉取用户信息失败，视为登录失效，回登录并保留回跳路径
+        next({ path: LOGIN_PATH, query: { redirect: to.fullPath } })
         return
       }
     }
@@ -56,8 +72,11 @@ export function createRouterGuards(router: Router) {
 
   // 进入某个路由之后触发的钩子
   router.afterEach((to, _, failure) => {
-    // 设置每个页面的 title
-    document.title = (to?.meta?.title as string) || document.title
+    // 设置每个页面的 title：路由标题 - 站点标题（优先中文标题）
+    const { VITE_GLOB_APP_TITLE_CN, VITE_GLOB_APP_TITLE } = getAppEnvConfig()
+    const appTitle = VITE_GLOB_APP_TITLE_CN || VITE_GLOB_APP_TITLE || document.title
+    const routeTitle = (to?.meta?.title as string) || ''
+    document.title = routeTitle ? `${routeTitle} - ${appTitle}` : appTitle
 
     if (isNavigationFailure(failure)) {
       console.warn('failed navigation', failure)

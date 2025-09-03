@@ -29,7 +29,7 @@ export function useFormRules(formData?: Recordable) {
     () =>
       [
         ...createRule('请输入密码'),
-        { pattern: /^[A-Za-z0-9]{1,20}$/, message: '仅支持字母与数字，且不超过20位', trigger: 'onChange' },
+        { pattern: /^[A-Za-z0-9]{1,20}$/, message: '仅支持字母与数字，且不超过20位', trigger: 'onBlur' },
       ] as FieldRule[],
   )
   const getSmsFormRule = computed(() => createRule('请输入短信验证码'))
@@ -39,22 +39,16 @@ export function useFormRules(formData?: Recordable) {
     if (!/^\d{1,10}$/.test(value)) return Promise.resolve('手机号码仅支持数字，且不超过10位')
     return Promise.resolve(true)
   }
-  // 关键修复：显式标注为 FieldRule[]，并把 trigger 固定为字面量类型
   const getMobileFormRule = computed<FieldRule[]>(() => [
     { validator: validateMobile, trigger: 'onBlur' as const },
   ])
 
-  const validatePolicy = async (value: any, _: FieldRule) => {
-    return !value ? Promise.resolve('勾选后才能注册') : Promise.resolve(true)
-  }
-
-  // 确认密码：仅在提交时触发，且忽略大小写比较
   const validateConfirmPassword = (password?: string) => {
     return async (value: string) => {
       if (!value) {
         return Promise.resolve('请输入确认密码')
       }
-      if ((value || '').toLowerCase() !== (password || '').toLowerCase()) {
+      if (value !== (password ?? '')) {
         return Promise.resolve('两次输入密码不一致')
       }
       return Promise.resolve(true)
@@ -67,7 +61,6 @@ export function useFormRules(formData?: Recordable) {
     const smsFormRule = unref(getSmsFormRule)
     const mobileFormRule = unref(getMobileFormRule)
 
-    // 关键修复：为展开对象提供明确的索引签名类型
     const mobileRule: Record<string, FieldRule[]> = {
       sms: smsFormRule,
       mobile: mobileFormRule,
@@ -76,12 +69,10 @@ export function useFormRules(formData?: Recordable) {
       // register form rules
       case LoginStateEnum.REGISTER:
         return {
-          // 注册仅用手机号
           password: passwordFormRule,
           confirmPassword: [
-            { validator: validateConfirmPassword(formData?.password) },
+            { validator: validateConfirmPassword(formData?.password), trigger: 'onBlur' as const },
           ],
-          // 如需隐私政策勾选，可开启下方规则
           // policy: [{ validator: validatePolicy, trigger: 'onBlur' }],
           ...mobileRule,
         }

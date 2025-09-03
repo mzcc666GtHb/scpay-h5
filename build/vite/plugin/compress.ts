@@ -1,16 +1,13 @@
-/**
- * Used to package and output gzip. Note that this does not work properly in Vite, the specific reason is still being investigated
- * https://github.com/anncwb/vite-plugin-compression
- */
 import type { PluginOption } from 'vite'
-
 import compressPlugin from 'vite-plugin-compression'
 
 export function configCompressPlugin(
-  compress: 'gzip' | 'brotli' | 'none',
+  compress: string | undefined,
   deleteOriginFile = false,
 ): PluginOption | PluginOption[] {
-  const compressList = compress.split(',')
+  // 统一规范：去掉首尾引号，并支持逗号分隔、多值、空白
+  const compressValue = String(compress ?? 'none').replace(/^['"]|['"]$/g, '')
+  const compressList = compressValue.split(',').map((s) => s.trim()).filter(Boolean)
 
   const plugins: PluginOption[] = []
 

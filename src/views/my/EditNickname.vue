@@ -33,6 +33,7 @@ import { showToast } from 'vant'
 import NavBar from './components/NavBar.vue'
 import { useUserStore } from '@/store/modules/user'
 
+defineOptions({ name: 'EditNickname' })
 const userStore = useUserStore()
 
 const { nickname } = userStore.getUserInfo

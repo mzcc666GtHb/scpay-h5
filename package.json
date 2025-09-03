@@ -18,6 +18,7 @@
     "build": "cross-env NODE_ENV=production vite build && tsx ./build/script/postBuild.ts",
     "build:no-cache": "pnpm clean:cache && npm run build",
     "report": "cross-env REPORT=true npm run build",
+    "build:report": "npm run report",
     "type:check": "vue-tsc --noEmit --skipLibCheck",
     "preview": "vite preview",
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",

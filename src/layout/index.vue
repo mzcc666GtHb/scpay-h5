@@ -11,10 +11,7 @@
           Vue 3.3 中新引入了 defineOptions 宏声明 name 属性
           https://gist.github.com/sxzz/3995fc7251567c7c95de35f45539b9c2
         -->
-        <keep-alive v-if="keepAliveComponents" :include="keepAliveComponents">
-          <component :is="Component" :key="route.fullPath" />
-        </keep-alive>
-        <component :is="Component" v-else :key="route.fullPath" />
+        <component :is="Component" :key="route.fullPath" />
       </template>
     </routerView>
     <van-tabbar route class="tabbar">
@@ -41,8 +38,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { useRouteStore } from '@/store/modules/route'
 
 const routeStore = useRouteStore()
-// 需要缓存的路由组件
-const keepAliveComponents = computed(() => routeStore.keepAliveComponents)
+
 const currentRoute = useRoute()
 
 const getTitle = computed(() => currentRoute.meta.title as string)
