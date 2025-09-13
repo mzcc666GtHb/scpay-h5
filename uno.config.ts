@@ -3,7 +3,6 @@ import {
   presetAttributify,
   presetTypography,
   presetUno,
-  presetWebFonts,
 } from 'unocss'
 import presetIcons from '@unocss/preset-icons'
 import presetRemToPx from '@unocss/preset-rem-to-px'
@@ -38,7 +37,7 @@ export default defineConfig({
     presetAttributify(),
 
     // https://unocss.dev/presets/typography#usage
-    presetTypography()
+    presetTypography(),
   ],
   transformers: [
     // 启用 Windi CSS for UnoCSS 的变体组功能(就是简写，具体看链接): https://unocss.dev/transformers/variant-group#usage

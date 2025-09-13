@@ -32,6 +32,7 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean, prodMock: 
       dts: true,
       resolvers: [VantResolver()],
       types: [],
+      dirs: ['src/components', 'src/views'],
     }),
     // UnoCSS
     UnoCSS(),
@@ -61,7 +62,9 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean, prodMock: 
   vitePlugins.push(configVisualizerConfig())
 
   // vite-plugin-mock
-  VITE_USE_MOCK && vitePlugins.push(configMockPlugin(isBuild, prodMock))
+  if (VITE_USE_MOCK) {
+    vitePlugins.push(configMockPlugin(isBuild, prodMock))
+  }
 
   // vite-plugin-svg-icons
   vitePlugins.push(configSvgIconsPlugin(isBuild))

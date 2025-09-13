@@ -79,6 +79,7 @@
 - KeepAlive 配置通过 `route` store 统一管理 `keepAliveComponents`
 
 示例（新增一个业务路由，尽量采用模块化）：
+
 ```ts
 // src/router/modules/example.ts
 import type { RouteRecordRaw } from 'vue-router'
@@ -101,6 +102,7 @@ export default [
   - 持久化：按需开启 `persist.enabled = true` 并设置 `strategies.key`，默认 `localStorage`
   - 提供 `useXxxStoreWithOut()` 便于在 `setup` 外（如路由守卫、工具函数）访问
 - 示例：
+
 ```ts
 // src/store/modules/example.ts
 import { defineStore } from 'pinia'
@@ -114,17 +116,21 @@ export const useExampleStore = defineStore({
   id: 'app-example',
   state: (): ExampleState => ({ count: 0 }),
   getters: {
-    double: (s) => s.count * 2,
+    double: s => s.count * 2,
   },
   actions: {
-    inc() { this.count++ },
+    inc() {
+      this.count++
+    },
   },
   persist: {
     enabled: true,
     strategies: [{ key: 'EXAMPLE-STATE', storage: localStorage }],
   },
 })
-export function useExampleStoreWithOut() { return useExampleStore(store) }
+export function useExampleStoreWithOut() {
+  return useExampleStore(store)
+}
 ```
 
 ## 7. HTTP/接口层规范（Axios 封装）
@@ -143,12 +149,13 @@ export function useExampleStoreWithOut() { return useExampleStore(store) }
   - GET 非字符串 `params` 会自动追加时间戳避免缓存
   - 如 `params` 为字符串，将拼接到 URL（RESTful 风格）
 - 示例：
+
 ```ts
 // src/api/system/example.ts
 import { http } from '@/utils/http/axios'
 
 // 获取列表
-export function fetchList(params: { page: number; pageSize: number }) {
+export function fetchList(params: { page: number, pageSize: number }) {
   return http.request({
     url: '/example/list',
     method: 'GET',
@@ -170,6 +177,7 @@ export function submitForm(data: any) {
 - 统一使用 `src/utils/Storage.ts` 的 `createStorage` 实例或 Pinia 持久化，不直接操作 `localStorage`
 - Token 等关键字段的 Key 从 `src/store/mutation-types.ts` 获取（如 `ACCESS-TOKEN`）
 - 示例：
+
 ```ts
 import { createStorage } from '@/utils/Storage'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
@@ -221,21 +229,21 @@ const token = storage.get(ACCESS_TOKEN)
 当 AI 被要求进行以下任务时，请严格按下面步骤完成：
 
 - 新增页面（View）
-  1) 在 `src/views/<module>/` 下创建页面组件（SFC，`<script setup lang="ts">`）
-  2) 在 `src/router/modules` 新建或更新对应路由模块，配置 `name`、`meta.title`、`keepAlive`
-  3) 如需状态，先创建 Pinia 模块（带 `persist`），再在页面中使用
-  4) 所需接口在 `src/api/<domain>/` 新建模块，通过 `http.request` 调用
-  5) 使用 Vant 组件与 UnoCSS 原子类构建 UI；必要时在 Less 内使用 `@import "src/styles/var.less"`
+  1. 在 `src/views/<module>/` 下创建页面组件（SFC，`<script setup lang="ts">`）
+  2. 在 `src/router/modules` 新建或更新对应路由模块，配置 `name`、`meta.title`、`keepAlive`
+  3. 如需状态，先创建 Pinia 模块（带 `persist`），再在页面中使用
+  4. 所需接口在 `src/api/<domain>/` 新建模块，通过 `http.request` 调用
+  5. 使用 Vant 组件与 UnoCSS 原子类构建 UI；必要时在 Less 内使用 `@import "src/styles/var.less"`
 
 - 新增接口（API）
-  1) 在 `src/api/<domain>/xxx.ts` 新建函数，使用已封装的 `http.request`
-  2) 定义请求/响应类型，默认处理返回 `result`，如需原始返回设置 `isTransformResponse: false`
-  3) 统一错误提示交由封装处理，避免重复 Toast
+  1. 在 `src/api/<domain>/xxx.ts` 新建函数，使用已封装的 `http.request`
+  2. 定义请求/响应类型，默认处理返回 `result`，如需原始返回设置 `isTransformResponse: false`
+  3. 统一错误提示交由封装处理，避免重复 Toast
 
 - 新增 Store（Pinia）
-  1) 文件放在 `src/store/modules/`，`defineStore` + 明确 `id`
-  2) 提供 `state/getters/actions`，如需持久化配置 `persist`
-  3) 导出 `useXxxStoreWithOut()` 便于在非 `setup` 环境使用
+  1. 文件放在 `src/store/modules/`，`defineStore` + 明确 `id`
+  2. 提供 `state/getters/actions`，如需持久化配置 `persist`
+  3. 导出 `useXxxStoreWithOut()` 便于在非 `setup` 环境使用
 
 - 使用图标
   - 本地 SVG：`<SvgIcon name="your-icon-name" />`
@@ -253,10 +261,13 @@ const token = storage.get(ACCESS_TOKEN)
 ## 16. 附：常用代码片段
 
 - 新建 `<script setup lang="ts">` 组件模板
+
 ```vue
 <template>
   <div class="p-16">
-    <van-button type="primary" class="w-full">提交</van-button>
+    <van-button type="primary" class="w-full">
+      提交
+    </van-button>
   </div>
 </template>
 
@@ -270,6 +281,7 @@ const token = storage.get(ACCESS_TOKEN)
 ```
 
 - 通过 HTTP 获取数据并渲染
+
 ```ts
 // src/views/example/index.ts (伪示例，逻辑写在 <script setup> 中)
 import { fetchList } from '@/api/system/example'

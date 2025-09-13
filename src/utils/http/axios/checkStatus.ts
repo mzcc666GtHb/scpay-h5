@@ -5,7 +5,9 @@ const recentToasts = new Map<string, number>()
 function showUniqueFailToast(msg: string) {
   const now = Date.now()
   const last = recentToasts.get(msg) || 0
-  if (now - last < TOAST_TTL) return
+  if (now - last < TOAST_TTL) {
+    return
+  }
   recentToasts.set(msg, now)
   showFailToast(msg)
 }

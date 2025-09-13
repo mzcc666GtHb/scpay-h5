@@ -45,7 +45,7 @@ const formValue = reactive({
 
 function validateNickname() {
   return async (value: string) => {
-    const pattern = /^[\u4E00-\u9FA5A-Za-z0-9-_.·]+$/
+    const pattern = /^[\u4E00-\u9FA5\w\-.\u00B7]+$/
     if (!pattern.test(value)) {
       return Promise.resolve('请输入正确内容')
     }

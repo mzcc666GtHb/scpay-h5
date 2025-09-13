@@ -50,12 +50,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       alias: [
         // @/xxxx => src/xxxx
         {
-          find: /\@\//,
+          find: /@\//,
           replacement: `${pathResolve('src')}/`,
         },
         // #/xxxx => types/xxxx
         {
-          find: /\#\//,
+          find: /#\//,
           replacement: `${pathResolve('types')}/`,
         },
       ],
@@ -107,7 +107,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           assetFileNames: '[ext]/[name]-[hash].[ext]',
           // 将常见三方库按组拆分，其他依赖并入 vendor，避免产出大量小 chunk
           manualChunks(id) {
-            if (!id.includes('node_modules')) return
+            if (!id.includes('node_modules')) {
+              return
+            }
             const groups: Record<string, string[]> = {
               vue: ['vue', 'vue-router', 'pinia'],
               vant: ['vant', '@vant/use'],
@@ -115,7 +117,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
               lodash: ['lodash-es'],
             }
             for (const [chunk, pkgs] of Object.entries(groups)) {
-              if (pkgs.some((pkg) => id.includes(`/node_modules/${pkg}/`))) {
+              if (pkgs.some(pkg => id.includes(`/node_modules/${pkg}/`))) {
                 return chunk
               }
             }

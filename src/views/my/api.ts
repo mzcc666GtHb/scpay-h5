@@ -1,6 +1,7 @@
+import type { MyProfileDTO, UpdateNicknameParams, UpdateProfileParams, UpdateSignParams } from './types'
 import { http } from '@/utils/http/axios'
 import { ContentTypeEnum } from '@/enums/httpEnum'
-import type { MyProfileDTO, UpdateNicknameParams, UpdateProfileParams, UpdateSignParams } from './types'
+
 export { getUserInfo as getMyProfile, changePassword } from '@/api/system/user'
 
 // 更新昵称（示例 URL，请按后端实际替换）

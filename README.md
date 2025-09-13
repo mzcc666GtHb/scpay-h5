@@ -43,7 +43,6 @@
 
 ## 项目结构（节选）
 
-
 ## 快速开始
 
 - 软件要求
@@ -103,6 +102,7 @@
   - VITE_PROXY：开发代理配置（JSON 字符串，例如：[[\"/api\",\"http://localhost:8001\"]]）
 
 提示：
+
 - 生产构建产物目录由 build/constant.ts 指定：dist/vant-mobile
 - 别名：@ 指向 src，# 指向 types（见 vite.config.ts）
 
@@ -168,7 +168,6 @@
 - 使用建议：
   - 统一通过封装后的实例发起请求
   - 根据后端返回结构调整 transform 与错误处理
-
 
 ## 构建与产物
 

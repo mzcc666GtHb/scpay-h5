@@ -7,7 +7,7 @@ export function configCompressPlugin(
 ): PluginOption | PluginOption[] {
   // 统一规范：去掉首尾引号，并支持逗号分隔、多值、空白
   const compressValue = String(compress ?? 'none').replace(/^['"]|['"]$/g, '')
-  const compressList = compressValue.split(',').map((s) => s.trim()).filter(Boolean)
+  const compressList = compressValue.split(',').map(s => s.trim()).filter(Boolean)
 
   const plugins: PluginOption[] = []
 
