@@ -9,7 +9,7 @@ const routeModuleList: Array<RouteRecordRaw> = [
     redirect: '/dashboard/index',
     component: Layout,
     meta: {
-      title: 'Home',
+      title: 'Scpay',
       icon: 'i-weui:home-filled',
     },
     children: [

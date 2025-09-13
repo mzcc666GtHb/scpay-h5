@@ -6,7 +6,7 @@ import { ResultEnum } from '@/enums/httpEnum'
 const fakeUserList = [
   {
     userId: 1,
-    username: 'admin',
+    username: '1234567890',
     password: '123456',
     nickname: 'Shpay',
     realname: 'administrator',
