@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#f7f8fa] pb-40">
+  <div class="bg-[#f7f8fa] pb-30 pt-0">
     <!-- 顶部 Banner 背景图 -->
     <div class="relative h-[210px] bg-cover bg-center" :style="{ backgroundImage: `url(${banner})` }" />
 
