@@ -44,9 +44,9 @@ const routeModuleList: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/example',
-    name: 'Example',
-    redirect: '/example/index',
+    path: '/myteam',
+    name: 'MyTeam',
+    redirect: '/myteam/index',
     component: Layout,
     meta: {
       title: 'Team',
@@ -55,11 +55,12 @@ const routeModuleList: Array<RouteRecordRaw> = [
     children: [
       {
         path: 'index',
-        name: 'ExamplePage',
+        name: 'MyTeamPage',
         meta: {
           keepAlive: false,
+          hiddenHeader: true,
         },
-        component: () => import('@/views/example/index.vue'),
+        component: () => import('@/views/myteam/index.vue'),
       },
     ],
   },
