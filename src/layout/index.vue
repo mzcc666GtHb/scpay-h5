@@ -15,12 +15,7 @@
       </template>
     </routerView>
     <van-tabbar route class="tabbar">
-      <van-tabbar-item
-        v-for="menu in getMenus"
-        :key="menu.name"
-        replace
-        :to="menu.path"
-      >
+      <van-tabbar-item v-for="menu in getMenus" :key="menu.name" replace :to="menu.path">
         <template #icon>
           <i :class="menu.meta?.icon" />
         </template>
@@ -31,32 +26,32 @@
 </template>
 
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import type { RouteRecordRaw } from 'vue-router'
-import { useRouteStore } from '@/store/modules/route'
+  import type { ComputedRef } from 'vue'
+  import { computed } from 'vue'
+  import { useRoute } from 'vue-router'
+  import type { RouteRecordRaw } from 'vue-router'
+  import { useRouteStore } from '@/store/modules/route'
 
-const routeStore = useRouteStore()
+  const routeStore = useRouteStore()
 
-const currentRoute = useRoute()
+  const currentRoute = useRoute()
 
-const getTitle = computed(() => currentRoute.meta.title as string)
+  const getTitle = computed(() => currentRoute.meta.title as string)
 
-// 菜单
-const getMenus: ComputedRef<RouteRecordRaw[]> = computed(() =>
-  routeStore.menus.filter((item) => {
-    return !item.meta?.innerPage
-  }),
-)
+  // 菜单
+  const getMenus: ComputedRef<RouteRecordRaw[]> = computed(() =>
+    routeStore.menus.filter((item) => {
+      return !item.meta?.innerPage
+    }),
+  )
 
-const getShowHeader = computed(() => !currentRoute.meta.hiddenHeader)
+  const getShowHeader = computed(() => !currentRoute.meta.hiddenHeader)
 </script>
 
 <style scoped lang="less">
-.tabbar {
-  bottom: 0;
-  width: 100%;
-  position: relative;
-}
+  .tabbar {
+    bottom: 0;
+    width: 100%;
+    position: relative;
+  }
 </style>
