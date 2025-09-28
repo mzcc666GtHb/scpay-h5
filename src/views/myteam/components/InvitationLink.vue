@@ -37,21 +37,21 @@ async function copyLink() {
 </script>
 
 <style lang="less" scoped>
-.invitation-link {
-  margin: 0 16px 20px;
+  .invitation-link {
+  margin: 0 14px 20px;
 }
 
 .section-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #333;
-  margin: 0 0 16px 0;
+  margin: 0 0 14px 0;
 }
 
 .link-container {
   background: white;
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 10px;
+  padding: 16px 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -59,10 +59,8 @@ async function copyLink() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 12px 16px;
-  border: 1px solid #e9ecef;
+  background: #ffffff;
+  height: 22px;
 }
 
 .link-text {

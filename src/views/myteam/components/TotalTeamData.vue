@@ -36,43 +36,51 @@ const totalMembers = ref('0')
 </script>
 
 <style lang="less" scoped>
-.total-team-data {
-  margin: 0 16px 20px;
+  .total-team-data {
+  margin: 0 14px 20px;
 }
 
 .section-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #333;
-  margin: 0 0 16px 0;
+  margin: 0 0 14px 0;
 }
 
 .data-cards {
   display: flex;
-  gap: 12px;
+  gap: 7px;
 }
 
 .data-card {
   flex: 1;
   background: white;
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
+  border-radius: 20px;
+  height: 93px;
+  padding: 0;
+  position: relative;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
   .card-title {
+    position: absolute;
+    left: 14px;
+    top: 16px;
     font-size: 14px;
     font-weight: 500;
-    color: #666;
-    margin: 0 0 8px 0;
+    color: #666666;
+    margin: 0;
   }
 
   .card-value {
+    position: absolute;
+    left: 14px;
+    top: 38px; /* 16px + 14px + 8px */
+    height: 33px;
     font-size: 24px;
     font-weight: 700;
-    color: #333;
+    color: #333333;
     margin: 0;
-    line-height: 1.2;
+    line-height: 33px;
   }
 }
 </style>

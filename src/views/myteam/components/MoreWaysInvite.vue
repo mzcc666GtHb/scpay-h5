@@ -66,21 +66,26 @@ function handleInvite(key: string) {
 </script>
 
 <style lang="less" scoped>
-.more-ways-invite {
-  margin: 0 16px 20px;
+  .more-ways-invite {
+  margin: 0 14px 20px;
 }
 
 .section-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #333;
-  margin: 0 0 16px 0;
+  margin: 0 0 14px 0;
 }
 
 .invite-options {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  background: white;
+  border-radius: 10px;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 128px;
 }
 
 .invite-option {
