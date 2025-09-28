@@ -24,22 +24,22 @@ const routeModuleList: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/message',
-    name: 'Message',
-    redirect: '/message/index',
+    path: '/order',
+    name: 'Order',
+    redirect: '/order/index',
     component: Layout,
     meta: {
       title: 'Order',
       icon: 'i-weui:contacts-filled',
     },
     children: [
-      {
+      { 
         path: 'index',
-        name: 'MessagePage',
+        name: 'OrderPage',
         meta: {
           keepAlive: false,
         },
-        component: () => import('@/views/message/index.vue'),
+        component: () => import('@/views/order/index.vue'),
       },
     ],
   },
