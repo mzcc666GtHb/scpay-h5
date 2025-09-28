@@ -18,6 +18,7 @@ const routeModuleList: Array<RouteRecordRaw> = [
         name: 'DashboardPage',
         meta: {
           keepAlive: false,
+          hiddenHeader: true,
         },
         component: () => import('@/views/dashboard/index.vue'),
       },
@@ -33,11 +34,12 @@ const routeModuleList: Array<RouteRecordRaw> = [
       icon: 'i-weui:contacts-filled',
     },
     children: [
-      { 
+      {
         path: 'index',
         name: 'OrderPage',
         meta: {
           keepAlive: false,
+          hiddenHeader: true,
         },
         component: () => import('@/views/order/index.vue'),
       },
